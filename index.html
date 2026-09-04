@@ -1,1 +1,1200 @@
 
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eian Segismundo — Funnel & Web Developer</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =============================================
+       CSS CUSTOM PROPERTIES (THEME TOKENS)
+    ============================================= */
+    :root {
+      --bg:           #ffffff;
+      --bg-alt:       #f5f5f7;
+      --surface:      #ffffff;
+      --border:       #e4e4e7;
+      --text:         #18181b;
+      --text-muted:   #71717a;
+      --accent:       #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-soft:  #eff6ff;
+      --card-shadow:  0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
+      --radius:       12px;
+      --nav-height:   64px;
+      --transition:   .25s ease;
+    }
+
+    [data-theme="dark"] {
+      --bg:           #0f0f11;
+      --bg-alt:       #18181b;
+      --surface:      #1c1c1f;
+      --border:       #27272a;
+      --text:         #fafafa;
+      --text-muted:   #a1a1aa;
+      --accent:       #3b82f6;
+      --accent-hover: #60a5fa;
+      --accent-soft:  #1e3a5f22;
+      --card-shadow:  0 1px 3px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.2);
+    }
+
+    /* =============================================
+       RESET & BASE
+    ============================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background-color var(--transition), color var(--transition);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    /* =============================================
+       FADE-IN ANIMATION ON SCROLL
+    ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =============================================
+       LAYOUT HELPERS
+    ============================================= */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 96px 0;
+    }
+
+    .section-label {
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 560px;
+    }
+
+    .section-header {
+      margin-bottom: 60px;
+    }
+
+    /* =============================================
+       NAVIGATION
+    ============================================= */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--nav-height);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      transition: background-color var(--transition), border-color var(--transition);
+    }
+
+    .nav-inner {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-brand {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      white-space: nowrap;
+    }
+
+    .nav-brand span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color var(--transition);
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* Dark Mode Toggle */
+    #theme-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: background-color var(--transition), border-color var(--transition), color var(--transition);
+      flex-shrink: 0;
+    }
+
+    #theme-toggle:hover {
+      background: var(--bg-alt);
+      color: var(--text);
+    }
+
+    #theme-toggle svg { width: 16px; height: 16px; pointer-events: none; }
+
+    /* Hamburger (mobile) */
+    #menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    #menu-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform .3s, opacity .3s;
+    }
+
+    /* =============================================
+       HERO SECTION
+    ============================================= */
+    #hero {
+      padding-top: calc(var(--nav-height) + 80px);
+      padding-bottom: 96px;
+    }
+
+    .hero-inner {
+      display: flex;
+      align-items: center;
+      gap: 72px;
+    }
+
+    .hero-text { flex: 1; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    .hero-headline {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero-headline em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-summary {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin-bottom: 36px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* CTA Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background-color var(--transition), color var(--transition),
+                  border-color var(--transition), transform .15s ease, box-shadow .15s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      box-shadow: 0 4px 14px rgba(37,99,235,.35);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-alt);
+      border-color: var(--text-muted);
+    }
+
+    /* Hero Avatar */
+    .hero-avatar-wrap {
+      flex-shrink: 0;
+    }
+
+    .hero-avatar {
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--border);
+      /* Subtle glow ring */
+      box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 12%, transparent),
+                  var(--card-shadow);
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    /* =============================================
+       ABOUT & COMPETENCIES
+    ============================================= */
+    #about { background: var(--bg-alt); transition: background-color var(--transition); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .about-bio p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .about-bio p:last-child { margin-bottom: 0; }
+
+    .about-bio strong { color: var(--text); font-weight: 600; }
+
+    .competency-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .competency-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      transition: transform .2s ease, box-shadow .2s ease,
+                  background-color var(--transition), border-color var(--transition);
+    }
+
+    .competency-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--card-shadow);
+    }
+
+    .competency-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .competency-icon svg { width: 20px; height: 20px; }
+
+    .competency-card h4 {
+      font-size: .9rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .competency-card p {
+      font-size: .82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* =============================================
+       PROJECTS SECTION
+    ============================================= */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform .2s ease, box-shadow .2s ease,
+                  background-color var(--transition), border-color var(--transition);
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0,0,0,.1);
+    }
+
+    .project-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    .project-body {
+      padding: 20px 22px 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+    }
+
+    .project-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .project-desc {
+      font-size: .875rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .btn-sm {
+      padding: 8px 18px;
+      font-size: .82rem;
+      border-radius: 6px;
+      align-self: flex-start;
+    }
+
+    /* =============================================
+       CONTACT SECTION
+    ============================================= */
+    #contact { background: var(--bg-alt); transition: background-color var(--transition); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .contact-info h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .contact-item-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--accent);
+    }
+
+    .contact-item-icon svg { width: 18px; height: 18px; }
+
+    .contact-item-text small {
+      display: block;
+      font-size: .75rem;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .contact-item-text span {
+      font-size: .9rem;
+      font-weight: 500;
+    }
+
+    .contact-item-text a {
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--accent);
+      transition: color var(--transition);
+    }
+
+    .contact-item-text a:hover { color: var(--accent-hover); }
+
+    /* Form */
+    .contact-form { display: flex; flex-direction: column; gap: 16px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .field { display: flex; flex-direction: column; gap: 6px; }
+
+    .field label {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: .02em;
+    }
+
+    .field input,
+    .field textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-family: inherit;
+      font-size: .9rem;
+      color: var(--text);
+      transition: border-color .2s ease, box-shadow .2s ease,
+                  background-color var(--transition), color var(--transition);
+      outline: none;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+
+    .field textarea { min-height: 130px; }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+      text-align: center;
+      font-size: .85rem;
+      color: var(--text-muted);
+      transition: border-color var(--transition), color var(--transition);
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 900px) {
+      .hero-inner { flex-direction: column-reverse; text-align: center; gap: 40px; }
+      .hero-summary { max-width: 100%; }
+      .hero-actions { justify-content: center; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+      .form-row { grid-template-columns: 1fr; }
+      .hero-avatar { width: 200px; height: 200px; }
+    }
+
+    @media (max-width: 640px) {
+      section { padding: 64px 0; }
+      .nav-links { display: none; }
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: var(--nav-height);
+        left: 0; right: 0;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 24px 20px;
+        gap: 16px;
+        z-index: 99;
+      }
+      #menu-toggle { display: flex; }
+      .competency-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =============================================
+       NAVIGATION
+  ============================================= -->
+  <nav>
+    <div class="container nav-inner">
+
+      <!-- Brand -->
+      <a href="#hero" class="nav-brand">Eian <span>Segismundo</span></a>
+
+      <!-- Links -->
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#about">Competencies</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <!-- Dark Mode Toggle -->
+        <button id="theme-toggle" aria-label="Toggle dark mode">
+          <!-- Sun icon (shown in dark mode) -->
+          <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+               style="display:none">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <!-- Moon icon (shown in light mode) -->
+          <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" fill="none"
+               viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <!-- Mobile menu toggle -->
+        <button id="menu-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- =============================================
+       HERO SECTION
+  ============================================= -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-inner">
+
+        <div class="hero-text reveal">
+          <div class="hero-badge">Available for Work</div>
+          <h1 class="hero-headline">
+            Funnel & Web Developer<br />
+            <em>IT Specialist</em>
+          </h1>
+          <p class="hero-summary">
+            IT graduate specializing in web development, GHL sales funnels,
+            platform automation, and system administration.
+          </p>
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">
+              <!-- Arrow icon -->
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                   stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+              View Work
+            </a>
+            <a href="#contact" class="btn btn-outline">Contact Me</a>
+          </div>
+        </div>
+
+        <!-- EDIT: Replace the src below with your actual profile photo URL -->
+        <div class="hero-avatar-wrap reveal">
+          <img
+            class="hero-avatar"
+            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
+            alt="Eian Segismundo profile photo"
+          />
+          <!-- EDIT: Put your photo URL here ↑ -->
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       ABOUT & COMPETENCIES SECTION
+  ============================================= -->
+  <section id="about">
+    <div class="container">
+
+      <div class="section-header reveal">
+        <p class="section-label">About Me</p>
+        <h2 class="section-title">Background & Core Competencies</h2>
+        <p class="section-sub">A brief look at my education, experience, and the skills I bring to every project.</p>
+      </div>
+
+      <div class="about-grid">
+
+        <!-- Bio -->
+        <div class="about-bio reveal">
+          <p>
+            I'm <strong>Eian A. Segismundo</strong>, an IT professional and Funnel/Web Developer
+            based in Sta. Ana, Manila. I hold a degree in Information Technology from
+            <strong>Pamantasan ng Lungsod ng Maynila (PLM)</strong>, where I built a strong
+            foundation in systems analysis, software development, and network administration.
+          </p>
+          <p>
+            My professional experience at <strong>Virtulink Digital Marketing Services</strong>
+            sharpened my skills in building high-converting sales funnels with
+            <strong>GoHighLevel (GHL)</strong>, managing client accounts, and automating workflows
+            that save time and reduce manual overhead.
+          </p>
+          <p>
+            I'm passionate about crafting clean, purposeful digital experiences — from landing
+            pages that convert to backend automations that keep operations running smoothly.
+          </p>
+        </div>
+
+        <!-- Competencies Grid -->
+        <div class="competency-grid">
+
+          <!-- Card 1 -->
+          <div class="competency-card reveal">
+            <div class="competency-icon">
+              <!-- Code icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"/>
+                <polyline points="8 6 2 12 8 18"/>
+              </svg>
+            </div>
+            <h4>Funnel & Web Development</h4>
+            <p>Building high-converting landing pages and sales funnels using GoHighLevel and modern web technologies.</p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="competency-card reveal">
+            <div class="competency-icon">
+              <!-- Users icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <h4>Account & Access Management</h4>
+            <p>Handling client onboarding, user permissions, and platform access control across multiple digital environments.</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="competency-card reveal">
+            <div class="competency-icon">
+              <!-- Zap / automation icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+              </svg>
+            </div>
+            <h4>Workflow Optimization</h4>
+            <p>Designing and automating business workflows to reduce friction, improve efficiency, and scale operations seamlessly.</p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="competency-card reveal">
+            <div class="competency-icon">
+              <!-- Monitor / systems icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </div>
+            <h4>Systems Analysis</h4>
+            <p>Evaluating and improving IT systems, identifying bottlenecks, and recommending solutions aligned with business goals.</p>
+          </div>
+
+        </div><!-- /competency-grid -->
+
+      </div><!-- /about-grid -->
+
+    </div>
+  </section>
+
+  <!-- =============================================
+       PROJECTS SECTION
+  ============================================= -->
+  <section id="projects">
+    <div class="container">
+
+      <div class="section-header reveal">
+        <p class="section-label">Work</p>
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-sub">A selection of landing pages and sales funnels built for real clients using GoHighLevel.</p>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- PROJECT 1: Brisketeer -->
+        <article class="project-card reveal">
+          <!-- EDIT: Replace src with actual Brisketeer project screenshot URL -->
+          <img
+            class="project-thumb"
+            src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=640&h=360&fit=crop"
+            alt="Brisketeer Landing Page preview"
+          />
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="tag">GoHighLevel</span>
+              <span class="tag">Funnel Builder</span>
+              <span class="tag">F&B</span>
+            </div>
+            <h3 class="project-title">Brisketeer Landing Pages</h3>
+            <p class="project-desc">
+              A complete funnel build for Brisketeer, a food brand, designed to capture leads
+              and drive online orders through a clean, appetite-driven layout.
+            </p>
+            <a href="https://app.allyvirtual.com/v2/preview/p5fkSlvj86EmjC5DObGO"
+               target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+              Live Preview ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- PROJECT 2: L'Oliveto -->
+        <article class="project-card reveal">
+          <!-- EDIT: Replace src with actual L'Oliveto project screenshot URL -->
+          <img
+            class="project-thumb"
+            src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=640&h=360&fit=crop"
+            alt="L'Oliveto Landing Page preview"
+          />
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="tag">GoHighLevel</span>
+              <span class="tag">Funnel Builder</span>
+              <span class="tag">Restaurant</span>
+            </div>
+            <h3 class="project-title">L'Oliveto Landing Pages</h3>
+            <p class="project-desc">
+              Elegant landing pages built for L'Oliveto restaurant, focusing on ambiance
+              storytelling, reservation CTAs, and a refined Mediterranean aesthetic.
+            </p>
+            <a href="https://app.allyvirtual.com/v2/preview/pf6zz9rOzFbTC9g6aAu8"
+               target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+              Live Preview ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- PROJECT 3: Maui Mornings -->
+        <article class="project-card reveal">
+          <!-- EDIT: Replace src with actual Maui Mornings project screenshot URL -->
+          <img
+            class="project-thumb"
+            src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=640&h=360&fit=crop"
+            alt="Maui Mornings Landing Page preview"
+          />
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="tag">GoHighLevel</span>
+              <span class="tag">Funnel Builder</span>
+              <span class="tag">Lifestyle</span>
+            </div>
+            <h3 class="project-title">Maui Mornings Landing Pages</h3>
+            <p class="project-desc">
+              Bright, tropical-themed landing pages for Maui Mornings, crafted to evoke a
+              vacation mood and convert visitors into customers through compelling visuals.
+            </p>
+            <a href="https://app.allyvirtual.com/v2/preview/PV4WXj2Go4P0zg9ifEC9"
+               target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+              Live Preview ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- PROJECT 4: Teri & Golgi -->
+        <article class="project-card reveal">
+          <!-- EDIT: Replace src with actual Teri & Golgi project screenshot URL -->
+          <img
+            class="project-thumb"
+            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=640&h=360&fit=crop"
+            alt="Teri & Golgi Landing Page preview"
+          />
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="tag">GoHighLevel</span>
+              <span class="tag">Funnel Builder</span>
+              <span class="tag">Branding</span>
+            </div>
+            <h3 class="project-title">Teri &amp; Golgi Landing Pages</h3>
+            <p class="project-desc">
+              Multi-page funnel for Teri &amp; Golgi, combining strong branding with
+              smooth user flows and optimized conversion touchpoints.
+            </p>
+            <a href="https://app.allyvirtual.com/v2/preview/bwUwfDmzYVlcpSnE4q1l"
+               target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+              Live Preview ↗
+            </a>
+          </div>
+        </article>
+
+        <!-- PROJECT 5: Real Estate -->
+        <article class="project-card reveal">
+          <!-- EDIT: Replace src with actual Real Estate project screenshot URL -->
+          <img
+            class="project-thumb"
+            src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=640&h=360&fit=crop"
+            alt="Real Estate Landing Page preview"
+          />
+          <div class="project-body">
+            <div class="project-tags">
+              <span class="tag">GoHighLevel</span>
+              <span class="tag">Funnel Builder</span>
+              <span class="tag">Real Estate</span>
+              <span class="tag">Automation</span>
+            </div>
+            <h3 class="project-title">Real Estate Landing Pages</h3>
+            <p class="project-desc">
+              Lead-generation funnel for a real estate brand, complete with inquiry forms,
+              automated follow-up sequences, and property showcase layouts.
+            </p>
+            <a href="https://app.allyvirtual.com/v2/preview/OsE5u0gZNFngR47VLbya"
+               target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">
+              Live Preview ↗
+            </a>
+          </div>
+        </article>
+
+      </div><!-- /projects-grid -->
+    </div>
+  </section>
+
+  <!-- =============================================
+       CONTACT SECTION
+  ============================================= -->
+  <section id="contact">
+    <div class="container">
+
+      <div class="section-header reveal">
+        <p class="section-label">Contact</p>
+        <h2 class="section-title">Let's Work Together</h2>
+        <p class="section-sub">Have a project in mind or just want to say hello? Fill out the form and I'll get back to you shortly.</p>
+      </div>
+
+      <div class="contact-grid">
+
+        <!-- Contact Info -->
+        <div class="contact-info reveal">
+          <h3>Get in Touch</h3>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <!-- Map pin icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </div>
+            <div class="contact-item-text">
+              <small>Location</small>
+              <!-- EDIT: Update location if it changes -->
+              <span>Sta. Ana, Manila, Philippines</span>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <!-- Mail icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div class="contact-item-text">
+              <small>Email</small>
+              <!-- EDIT: Update email address here if needed -->
+              <a href="mailto:eiansegismundoo@gmail.com">eiansegismundoo@gmail.com</a>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <!-- Phone icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07
+                         19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67
+                         A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72
+                         c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91
+                         a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45
+                         c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+            </div>
+            <div class="contact-item-text">
+              <small>Phone</small>
+              <!-- EDIT: Update phone number here if needed -->
+              <a href="tel:+639272573374">+63 927 257 3374</a>
+            </div>
+          </div>
+
+        </div><!-- /contact-info -->
+
+        <!-- Contact Form -->
+        <form class="contact-form reveal" id="contact-form" novalidate>
+          <div class="form-row">
+            <div class="field">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="Juan dela Cruz" required />
+            </div>
+            <div class="field">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" placeholder="juan@example.com" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">
+            Send Message
+            <!-- Send icon -->
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                 stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+          <p id="form-status" style="font-size:.85rem;color:var(--text-muted);display:none;"></p>
+        </form>
+
+      </div><!-- /contact-grid -->
+    </div>
+  </section>
+
+  <!-- =============================================
+       FOOTER
+  ============================================= -->
+  <footer>
+    <div class="container">
+      <!-- EDIT: Update year automatically via JS below -->
+      <p id="footer-copy"></p>
+    </div>
+  </footer>
+
+  <!-- =============================================
+       JAVASCRIPT
+  ============================================= -->
+  <script>
+    /* ------------------------------------------
+       1. DARK MODE TOGGLE
+    ------------------------------------------ */
+    const html       = document.documentElement;
+    const toggleBtn  = document.getElementById('theme-toggle');
+    const iconSun    = document.getElementById('icon-sun');
+    const iconMoon   = document.getElementById('icon-moon');
+
+    function applyTheme(theme) {
+      html.setAttribute('data-theme', theme);
+      if (theme === 'dark') {
+        iconSun.style.display  = 'block';
+        iconMoon.style.display = 'none';
+      } else {
+        iconSun.style.display  = 'none';
+        iconMoon.style.display = 'block';
+      }
+    }
+
+    // Load saved preference or respect OS preference
+    const saved    = localStorage.getItem('theme');
+    const osDark   = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initial  = saved || (osDark ? 'dark' : 'light');
+    applyTheme(initial);
+
+    toggleBtn.addEventListener('click', () => {
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      localStorage.setItem('theme', next);
+    });
+
+    /* ------------------------------------------
+       2. MOBILE MENU TOGGLE
+    ------------------------------------------ */
+    const menuToggle = document.getElementById('menu-toggle');
+    const navLinks   = document.getElementById('nav-links');
+
+    menuToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(open));
+    });
+
+    // Close menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    /* ------------------------------------------
+       3. SCROLL-REVEAL ANIMATION
+    ------------------------------------------ */
+    const revealEls = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target); // animate once
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    /* ------------------------------------------
+       4. CONTACT FORM (CLIENT-SIDE DEMO)
+       EDIT: Replace this block with your actual
+       form backend (e.g., Formspree, EmailJS).
+    ------------------------------------------ */
+    const form       = document.getElementById('contact-form');
+    const formStatus = document.getElementById('form-status');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name    = form.name.value.trim();
+      const email   = form.email.value.trim();
+      const message = form.message.value.trim();
+
+      if (!name || !email || !message) {
+        formStatus.textContent = 'Please fill in all fields.';
+        formStatus.style.color = '#ef4444';
+        formStatus.style.display = 'block';
+        return;
+      }
+
+      // Simulate sending — replace with real API call
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+
+      setTimeout(() => {
+        formStatus.textContent = '✓ Message sent! I\'ll be in touch soon.';
+        formStatus.style.color = '#22c55e';
+        formStatus.style.display = 'block';
+        form.reset();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = 'Send Message <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+      }, 1200);
+    });
+
+    /* ------------------------------------------
+       5. DYNAMIC FOOTER YEAR
+    ------------------------------------------ */
+    document.getElementById('footer-copy').textContent =
+      `© ${new Date().getFullYear()} Eian A. Segismundo. All rights reserved.`;
+  </script>
+
+</body>
+</html>

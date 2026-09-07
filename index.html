@@ -680,10 +680,8 @@
     #contact { background: var(--bg-alt); transition: background-color var(--transition); }
 
     .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1.4fr;
-      gap: 64px;
-      align-items: start;
+      display: flex;
+      justify-content: flex-start;
     }
 
     .contact-info h3 {
@@ -741,43 +739,6 @@
 
     .contact-item-text a:hover { text-decoration-color: var(--text); }
 
-    /* Form */
-    .contact-form { display: flex; flex-direction: column; gap: 16px; }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-    .field { display: flex; flex-direction: column; gap: 6px; }
-
-    .field label {
-      font-size: .82rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: .02em;
-    }
-
-    .field input,
-    .field textarea {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 11px 14px;
-      font-family: inherit;
-      font-size: .9rem;
-      color: var(--text);
-      transition: border-color .2s ease, box-shadow .2s ease,
-                  background-color var(--transition), color var(--transition);
-      outline: none;
-      resize: vertical;
-    }
-
-    .field input:focus,
-    .field textarea:focus {
-      border-color: var(--text);
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--text) 8%, transparent);
-    }
-
-    .field textarea { min-height: 130px; }
-
     /* =============================================
        FOOTER
     ============================================= */
@@ -798,8 +759,6 @@
       .hero-summary { max-width: 100%; }
       .hero-actions { justify-content: center; }
       .about-grid { grid-template-columns: 1fr; gap: 40px; }
-      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
-      .form-row { grid-template-columns: 1fr; }
       .hero-avatar { width: 200px; height: 200px; }
     }
 
@@ -1212,7 +1171,6 @@
             </div>
             <div class="contact-item-text">
               <small>Location</small>
-              <!-- EDIT: Update location if it changes -->
               <span>Sta. Ana, Manila, Philippines</span>
             </div>
           </div>
@@ -1253,36 +1211,22 @@
             </div>
           </div>
 
-        </div><!-- /contact-info -->
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <!-- Facebook icon -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+              </svg>
+            </div>
+            <div class="contact-item-text">
+              <small>Facebook</small>
+              <!-- EDIT: Update Facebook profile URL if needed -->
+              <a href="https://www.facebook.com/eian.segismundo" target="_blank" rel="noopener noreferrer">facebook.com/eian.segismundo</a>
+            </div>
+          </div>
 
-        <!-- Contact Form -->
-        <form class="contact-form reveal-right" id="contact-form" novalidate>
-          <div class="form-row">
-            <div class="field">
-              <label for="name">Full Name</label>
-              <input type="text" id="name" name="name" placeholder="Juan dela Cruz" required />
-            </div>
-            <div class="field">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" placeholder="juan@example.com" required />
-            </div>
-          </div>
-          <div class="field">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" placeholder="Tell me about your project..." required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary" style="align-self:flex-start;">
-            Send Message
-            <!-- Send icon -->
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                 stroke-linejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"/>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-            </svg>
-          </button>
-          <p id="form-status" style="font-size:.85rem;color:var(--text-muted);display:none;"></p>
-        </form>
+        </div><!-- /contact-info -->
 
       </div><!-- /contact-grid -->
     </div>
@@ -1456,43 +1400,7 @@
     sections.forEach(s => sectionObserver.observe(s));
 
     /* ------------------------------------------
-       9. CONTACT FORM (CLIENT-SIDE DEMO)
-       EDIT: Replace setTimeout with a real API
-       call (e.g., Formspree or EmailJS).
-    ------------------------------------------ */
-    const form       = document.getElementById('contact-form');
-    const formStatus = document.getElementById('form-status');
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const name    = form.name.value.trim();
-      const email   = form.email.value.trim();
-      const message = form.message.value.trim();
-
-      if (!name || !email || !message) {
-        formStatus.textContent = 'Please fill in all fields.';
-        formStatus.style.color = '#ef4444';
-        formStatus.style.display = 'block';
-        return;
-      }
-
-      const submitBtn = form.querySelector('button[type="submit"]');
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending…';
-
-      setTimeout(() => {
-        formStatus.textContent = '✓ Message sent! I\'ll be in touch soon.';
-        formStatus.style.color = '#22c55e';
-        formStatus.style.display = 'block';
-        form.reset();
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = 'Send Message <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
-      }, 1200);
-    });
-
-    /* ------------------------------------------
-       10. DYNAMIC FOOTER YEAR
+       9. DYNAMIC FOOTER YEAR
     ------------------------------------------ */
     document.getElementById('footer-copy').textContent =
       `© ${new Date().getFullYear()} Eian A. Segismundo. All rights reserved.`;
